@@ -26,11 +26,12 @@ Route::name('library.')->group(function(){
 Route::middleware('auth')->group(function(){
     Route::prefix('dashboard')->group(function(){
         Route::name('dashboard.')->group(function(){
-            Route::get('{menu}/meus-emprestimos',[LoanController::class, 'index'])->name('loans.my');
-            Route::get('{menu}/emprestimos',[LoanController::class, 'show'])->name('loans');
+            Route::get('painel/meus-emprestimos',[LoanController::class, 'index'])->name('loans.my');
+            Route::get('painel/emprestimos',[LoanController::class, 'show'])->name('loans');
 
-            Route::get('{menu}/buscar',[BookController::class, 'search'])->name('book.search');
-            Route::get('{menu}/cadastrar',[BookController::class, 'create'])->name('book.create');
+            Route::get('livros',[BookController::class, 'search'])->name('book.search');
+            Route::get('livros/cadastrar',[BookController::class, 'create'])->name('book.create');
+            Route::post('livros/cadastrar',[BookController::class, 'store'])->name('book.store');
 
             Route::get('{menu}/nova',[CategoryController::class, 'create'])->name('category.create');
             Route::get('{menu}/todas',[CategoryController::class, 'show'])->name('category.show');

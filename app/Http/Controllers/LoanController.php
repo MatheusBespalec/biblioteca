@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
 {
-    public function index($menu)
+    public function index()
     {
         $user = Auth::user();
 
-        return view('dashboard.my-loans',['user'=>$user,'menu'=>$menu]);
+        return view('dashboard.my-loans',['user'=>$user,'menu'=>'painel']);
     }
 
-    public function show($menu)
+    public function show()
     {
         $user = Auth::user();
 
-        return view('dashboard.loans',['user'=>$user,'menu'=>$menu]);
+        return view('dashboard.loans',['user'=>$user,'menu'=>'painel']);
     }
 }
