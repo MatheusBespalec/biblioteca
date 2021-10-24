@@ -1,0 +1,123 @@
+/* Default */
+i{
+    color: #82b1ff;
+}
+
+.clear{
+    clear: both;
+}
+/* Navbar */
+
+.navbar-brand{
+    font-size: 33px;
+}
+
+/* Banner */
+
+section.banner{
+    background-image: url("../images/library.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+section.banner .container{
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.banner form{
+    width: 100%;
+    text-align: center;
+}
+
+section.banner form i{
+    font-size: 80px;
+}
+
+section.banner form h1{
+    color: #ffffff;
+}
+
+/* Search */
+
+section.search .card img{
+    width: 50%;
+}
+
+/* Search */
+
+section.about .img{
+    background-image: url("../images/library.jpg");
+    background-position: center;
+    background-size: cover;
+    height: 250px;
+}
+
+/* Footer */
+
+footer{
+    color: #ffffff;
+}
+
+/* Dashboard */
+
+.menu-dashboard{
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.menu-dashboard i{
+    color: #ffffff;
+}
+
+.menu-dashboard button{
+    width: 100%;
+    text-align: left;
+}
+
+.user{
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.user i{
+    color: #ccc;
+}
+
+.dashbord-content{
+    width: calc(100% - 280px);
+    float: right;
+}
+
+/* Tables */
+
+table img{
+    width: 50px;
+}
+
+/* Profile */
+
+.user-image{
+    width: 200px;
+    height: 200px;
+    border: 2px solid #ccc;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-image i{
+    font-size: 50px;
+    color: #cccccc;
+}
