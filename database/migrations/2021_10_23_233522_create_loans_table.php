@@ -16,10 +16,11 @@ class CreateLoansTable extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->integer('book_id');
-            $table->integer('user-id');
-            $table->boolean('return');
+            $table->integer('user_id');
+            $table->boolean('return')->default('0');
             $table->date('withdraw');
-            $table->date('devolution');
+            $table->date('devolution')->nullable();
+            $table->date('limit_devolution');
         });
     }
 

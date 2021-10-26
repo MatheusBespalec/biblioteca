@@ -21,24 +21,34 @@ use App\Http\Controllers\UserController;
 Route::name('library.')->group(function(){
     Route::get('/',[LibraryController::class, 'index'])->name('home');
     Route::get('/sobre',[LibraryController::class, 'about'])->name('about');
+    Route::get('/livro/{book}',[LibraryController::class, 'show'])->name('show');
 });
 
 Route::middleware('auth')->group(function(){
     Route::prefix('dashboard')->group(function(){
         Route::name('dashboard.')->group(function(){
-            Route::get('painel/meus-emprestimos',[LoanController::class, 'index'])->name('loans.my');
-            Route::get('painel/emprestimos',[LoanController::class, 'show'])->name('loans');
+            Route::get('meus-emprestimos',[LoanController::class, 'show'])->name('loans.my');
+            Route::get('emprestimos',[LoanController::class, 'index'])->name('loans');
+            Route::get('emprestimos/cadastrar',[LoanController::class, 'create'])->name('loans.create');
+            Route::post('emprestimos/cadastrar',[LoanController::class, 'store'])->name('loans.store');
+            Route::get('emprestimos/atualizar/{loan}',[LoanController::class, 'update'])->name('loans.update');
 
-            Route::get('livros',[BookController::class, 'search'])->name('book.search');
+            Route::get('livros',[BookController::class, 'index'])->name('book.index');
+            Route::post('livros',[BookController::class, 'search'])->name('book.search');
             Route::get('livros/cadastrar',[BookController::class, 'create'])->name('book.create');
             Route::post('livros/cadastrar',[BookController::class, 'store'])->name('book.store');
+            Route::get('livro/{book}',[BookController::class, 'show'])->name('book.single');
+            Route::get('livro/editar/{book}',[BookController::class, 'edit'])->name('book.edit');
+            Route::post('atualizar/livro/{id}',[BookController::class, 'update'])->name('book.update');
 
-            Route::get('{menu}/nova',[CategoryController::class, 'create'])->name('category.create');
-            Route::get('{menu}/todas',[CategoryController::class, 'show'])->name('category.show');
+            Route::get('categorias',[CategoryController::class, 'index'])->name('category.index');
+            Route::get('categorias/cadastrar',[CategoryController::class, 'create'])->name('category.create');
+            Route::post('categorias/cadastrar',[CategoryController::class, 'store'])->name('category.store');
 
-            Route::get('{menu}/lista',[UserController::class, 'index'])->name('users');
-            Route::get('{menu}/meu-perfil',[UserController::class, 'show'])->name('users.show');
-
+            Route::get('usuarios',[UserController::class, 'index'])->name('users');
+            Route::get('usuario/meu-perfil',[UserController::class, 'profile'])->name('profile');
+            Route::get('meu-perfil/editar',[UserController::class, 'edit'])->name('users.edit');
+            Route::post('meu-perfil/atualizar',[UserController::class, 'update'])->name('users.update');
         });
     });
 });

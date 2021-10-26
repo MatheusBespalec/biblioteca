@@ -12,12 +12,12 @@
             <input type="file" name="image" class="form-control" id="inputGroupFile01">
         </div>
 
-        @error('name')
+        @error('title')
         <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
         <div class="form-floating mb-3">
-            <input type="text" name="name" class="form-control" id="floatingInput" value="{{ old('name') }}">
-            <label for="floatingInput">Nome</label>
+            <input type="text" name="title" class="form-control" id="floatingInput" value="{{ old('name') }}">
+            <label for="floatingInput">Titulo</label>
         </div>
 
         @error('description')
@@ -48,7 +48,15 @@
             </select>
         </div>
 
+        <p class="fw-bold">Selecione as categorias do livro:</p>
+        @foreach($categories as $category)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="{{ $category->category }}" name="categories[]" value="{{ $category->id }}">
+                <label class="form-check-label" for="{{ $category->category }}">{{ $category->category }}</label>
+            </div>
+        @endforeach
+        <br>
         <input type="hidden" name="giver_id" value="{{ $user->id }}">
-        <button type="submit" class="btn btn-primary">Cadastrar livro</button>
+        <button type="submit" class="btn btn-primary mt-2">Cadastrar livro</button>
     </form>
 @endsection

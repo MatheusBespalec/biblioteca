@@ -20,7 +20,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('hierarchy_level');
-            $table->integer('image')->nullable();
+            $table->boolean('open_loan')->default(0);
+            $table->string('cpf')->nullable()->unique();
+            $table->string('phone')->nullable()->unique();
+            $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

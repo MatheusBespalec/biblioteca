@@ -23,7 +23,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('library.home') }}"><i class="fas fa-book-open"></i> Let's</a>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link @if($page == 'home') active" aria-current="page @endif " href="{{ route('library.home') }}">Home</a>
@@ -36,7 +36,7 @@
                         </li>
                         @auth
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="dashboard/painel/meus-emprestimos">Meus Empréstimos</a>
+                                <a class="nav-link" aria-current="page" href="{{ route('dashboard.loans.my') }}">Meus Empréstimos</a>
                             </li>
                             <li class="nav-item">
                                 <form method="post" action="/logout">
@@ -66,33 +66,9 @@
 
         @yield('content')
 
-        <footer class="pt-4 pt-md-5 border-top bg-dark">
+        <footer class="bg-dark py-4">
             <div class="container">
-                <div class="row">
-                    <div class="col-6 col-md">
-                        <h5>Features</h5>
-                        <ul class="list-unstyled text-small">
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Cool stuff</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Random feature</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Team feature</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Stuff for developers</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Another one</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Last time</a></li>
-                        </ul>
-                    </div><!--col-6-->
-                    <div class="col-6 col-md">
-                        <h5>Resources</h5>
-                        <ul class="list-unstyled text-small">
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Resource</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Resource name</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Another resource</a></li>
-                            <li class="mb-1"><a class="link-light text-decoration-none" href="#">Final resource</a></li>
-                        </ul>
-                    </div><!--col-6-->
-                    <div class="col-12 col-md">
-                        <small class="d-block mb-3 text-center">&copy; 2021 - Biblioteca Let's </small>
-                    </div><!--col-12-->
-                </div><!--row-->
+                <small class="d-block text-center">&copy; 2021 - Biblioteca Let's </small>
             </div><!--container-->
         </footer><!--border-top-->
 

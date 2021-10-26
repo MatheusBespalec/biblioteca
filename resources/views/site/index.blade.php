@@ -33,27 +33,15 @@
                             <li class="list-group-item">Autor: {{ $book->author }}</li>
                         </ul><!--list-group-->
                         <div class="card-body">
-                            <a href="#" class="btn btn-primary btn-sm">Ver Livro</a>
+                            <a href="{{ route('library.show',['book'=>$book->id]) }}" class="btn btn-primary btn-sm">Ver Livro</a>
                             <a href="#" class="btn btn-secondary btn-sm">Reservar</a>
                         </div><!--card-body-->
                     </div><!--card-->
                 @endforeach
             </div><!--row-->
-            <nav>
-                <ul class="pagination  justify-content-center">
-                    <li class="page-item">
-                        <span class="page-link">Previous</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">2</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-center">
+                {{ $books->links() }}
+            </div>
         </div><!--container-->
     </section><!--serach-->
 @endsection

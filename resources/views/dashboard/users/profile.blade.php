@@ -12,12 +12,12 @@
             <hr>
             <p><strong>E-mail: </strong>{{ $user->email }}</p>
             <hr>
-            <p><strong>Telefone: </strong>(11) 99999-9999</p>
+            <p><strong>Telefone: </strong>{{ $user->phone }}</p>
             <hr>
-            <p><strong>CPF: </strong>000.000.000-00</p>
+            <p><strong>CPF: </strong>{{ $user->cpf }}</p>
             <hr>
-            <p><strong>Endereço: </strong>Rua lorem Ipsum, 255, Centro | São Paulo - SP </p>
+            <p><strong>Endereço: </strong>{{ $user->adress }}</p>
         </div><!--user-info-->
-        <a href="" class="btn btn-primary">Editar perfil</a>
+        <a href="{{ route('dashboard.users.edit') }}" class="btn btn-primary">Editar perfil</a>
     </div><!--container-->
 @endsection

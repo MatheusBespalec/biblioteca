@@ -121,3 +121,9 @@ table img{
     font-size: 80px;
     color: #cccccc;
 }
+
+/* Image Sizes */
+
+.small-img{
+    max-width: 200px;
+}

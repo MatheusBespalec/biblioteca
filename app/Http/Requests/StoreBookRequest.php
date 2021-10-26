@@ -24,7 +24,7 @@ class StoreBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required'],
+            'title'=>['required'],
             'image'=>['bail','required','image'],
             'description'=>['required'],
             'author'=>['bail','required','regex:/^[a-záàâãéèêíïóôõöúçñ ]+$/i'],
@@ -35,7 +35,7 @@ class StoreBookRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'=>'Campo nome é obrigatório!',
+            'title.required'=>'Campo nome é obrigatório!',
             'image.required'=>'Selecione uma imagem!!',
             'image.image'=>'Imagem inválida!',
             'description.required'=>'Campo descrição é obrigatório!',
