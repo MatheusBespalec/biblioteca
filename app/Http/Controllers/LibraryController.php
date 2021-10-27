@@ -10,9 +10,17 @@ class LibraryController extends Controller
 {
     public function index()
     {
-        $books = Book::paginate(9);
+        $search = request('search');
+        if ($search) {
+            $books = Book::where('title','like','%'.$search.'%')
+                ->orWhere('author','like','%'.$search.'%')
+                ->orderBy('views','desc')
+                ->paginate(9);
+        } else {
+            $books = Book::orderBy('views','desc')->paginate(9);
+        }
 
-        return view('site.index',['page'=>'home','books'=>$books]);
+        return view('site.index',['page'=>'home','books'=>$books,'search'=>$search]);
     }
 
     public function about()

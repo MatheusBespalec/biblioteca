@@ -21,7 +21,7 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Endereço</span>
-            <input type="text" name="address" class="form-control" value="{{ $user->adress }}" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" name="address" class="form-control" value="{{ $user->address }}" aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <button class="btn btn-primary" type="submit">Atualizar Perfil</button>
     </form>

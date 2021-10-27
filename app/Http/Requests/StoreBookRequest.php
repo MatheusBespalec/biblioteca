@@ -28,7 +28,8 @@ class StoreBookRequest extends FormRequest
             'image'=>['bail','required','image'],
             'description'=>['required'],
             'author'=>['bail','required','regex:/^[a-záàâãéèêíïóôõöúçñ ]+$/i'],
-            'available'=>['bail','required','boolean']
+            'available'=>['bail','required','boolean'],
+            'giver_id'=>['bail','required','numeric','exists:users,id']
         ];
     }
 
@@ -43,6 +44,8 @@ class StoreBookRequest extends FormRequest
             'author.regex'=>'Nome do author não pode conter numeros ou caracteres especiais!',
             'available.required'=>'Selecione uma opção válida!',
             'available.boolean'=>'Selecione uma opção válida!',
+            'giver_id.required'=>'O ID do doador é um campo obrigatório!',
+            'giver_id.exists'=>'Não existe um usuario com esse id'
         ];
     }
 }

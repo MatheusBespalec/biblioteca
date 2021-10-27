@@ -44,6 +44,13 @@ class CategoryController extends Controller
         Category::create($request->all());
 
 
-        return redirect()->route('dashboard.category.index')->with(['menu'=>'categorias','user'=>$user]);
+        return redirect()->route('dashboard.category.index');
+    }
+
+    public function delete(Category $category)
+    {
+        $category->delete();
+
+        return redirect()->route('dashboard.category.index');
     }
 }

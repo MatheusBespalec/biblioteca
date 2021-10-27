@@ -16,7 +16,9 @@
             <hr>
             <p><strong>CPF: </strong>{{ $user->cpf }}</p>
             <hr>
-            <p><strong>Endereço: </strong>{{ $user->adress }}</p>
+            <p><strong>Endereço: </strong>{{ $user->address }}</p>
+            <hr>
+            <p><strong>Possui empréstimos pendentes? </strong>@if($user->open_loan == 1) Sim @else Não @endif</p>
         </div><!--user-info-->
         <a href="{{ route('dashboard.users.edit') }}" class="btn btn-primary">Editar perfil</a>
     </div><!--container-->

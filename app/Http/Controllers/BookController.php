@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::paginate(20);
         $user = Auth::user();
 
         return view('dashboard.books.index',['menu'=>'livros','user'=>$user,'books'=>$books]);
@@ -26,9 +26,9 @@ class BookController extends Controller
             $category = Category::where('category','like','%'.$request->search.'%')->first();
             $books = Book::where('book_categories.category_id','=',$category->id)
                 ->join('book_categories','books.id','=','book_categories.book_id')
-                ->get();
+                ->paginate(20);
         } else {
-            $books = Book::where($request->collumn,'like','%'.$request->search.'%')->get();
+            $books = Book::where($request->collumn,'like','%'.$request->search.'%')->paginate(20);
         }
 
         $user = Auth::user();
@@ -51,8 +51,6 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request)
     {
-        $user = Auth::user();
-
         $request->validated();
 
         $imageName = time() . '.' . $request->image->extension();
@@ -71,9 +69,7 @@ class BookController extends Controller
             $category->save();
         }
 
-        $books = Book::all();
-
-        return redirect()->route('dashboard.book.index')->with(['menu'=>'livros','user'=>$user,'books'=>$books]);
+        return redirect()->route('dashboard.book.index');
     }
 
     public function show(Book $book)
@@ -130,6 +126,13 @@ class BookController extends Controller
         }
 
         return redirect()->route('dashboard.book.single',['book'=>$id]);
+    }
+
+    public function delete(Book $book)
+    {
+        $book->delete();
+
+        return redirect()->route('dashboard.book.index');
     }
 
     private function uptadeBookCategories($book_id,$categories)

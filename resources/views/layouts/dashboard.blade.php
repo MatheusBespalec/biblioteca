@@ -38,43 +38,54 @@
                 <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
                         <li><a href="{{ route('dashboard.loans.my') }}" class="link-light rounded text-decoration-none">Meus empréstimos</a></li>
-                        <li><a href="{{ route('dashboard.loans') }}" class="link-light rounded text-decoration-none">Em Aberto</a></li>
-                        <li><a href="{{ route('dashboard.loans.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
+                        @can('create')
+                            <li><a href="{{ route('dashboard.loans.index') }}" class="link-light rounded text-decoration-none">Em Aberto</a></li>
+                            <li><a href="{{ route('dashboard.loans.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
+                        @endcan
                     </ul>
                 </div>
-                <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#book-collapse" aria-expanded="false">
-                        <a href="#" class="nav-link @if($menu == 'livros') active" aria-current="page @else link-light @endif ">
-                            <i class="fas fa-book-open"></i> Livros
-                        </a>
-                    </button>
-                </li>
-                <div class="collapse" id="book-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
-                        <li><a href="{{ route('dashboard.book.index') }}" class="link-light rounded text-decoration-none">Buscar</a></li>
-                        <li><a href="{{ route('dashboard.book.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
-                    </ul>
-                </div>
-                <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#category-collapse" aria-expanded="false">
-                        <a href="#" class="nav-link @if($menu == 'categorias') active" aria-current="page @else link-light @endif ">
-                            <i class="fas fa-list"></i> Categorias dos Livros
-                        </a>
-                    </button>
-                </li>
-                <div class="collapse" id="category-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
-                        <li><a href="{{ route('dashboard.category.index') }}" class="link-light rounded text-decoration-none">Todas</a></li>
-                        <li><a href="{{ route('dashboard.category.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
-                    </ul>
-                </div>
-                <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded collapsed text-white">
-                        <a href="{{ route('dashboard.users') }}" class="nav-link @if($menu == 'usuarios') active" aria-current="page @else link-light @endif ">
-                            <i class="fas fa-users"></i> Usuarios
-                        </a>
-                    </button>
-                </li>
+                @can('create')
+                    <li class="nav-item">
+                        <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#book-collapse" aria-expanded="false">
+                            <a href="#" class="nav-link @if($menu == 'livros') active" aria-current="page @else link-light @endif ">
+                                <i class="fas fa-book-open"></i> Livros
+                            </a>
+                        </button>
+                    </li>
+                    <div class="collapse" id="book-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
+                            <li><a href="{{ route('dashboard.book.index') }}" class="link-light rounded text-decoration-none">Buscar</a></li>
+                            <li><a href="{{ route('dashboard.book.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
+                        </ul>
+                    </div>
+                    <li class="nav-item">
+                        <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#category-collapse" aria-expanded="false">
+                            <a href="#" class="nav-link @if($menu == 'categorias') active" aria-current="page @else link-light @endif ">
+                                <i class="fas fa-list"></i> Categorias dos Livros
+                            </a>
+                        </button>
+                    </li>
+                    <div class="collapse" id="category-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
+                            <li><a href="{{ route('dashboard.category.index') }}" class="link-light rounded text-decoration-none">Todas</a></li>
+                            <li><a href="{{ route('dashboard.category.create') }}" class="link-light rounded text-decoration-none">Cadastrar</a></li>
+                        </ul>
+                    </div>
+                    <li class="nav-item">
+                        <button class="btn btn-toggle align-items-center rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="false">
+                            <a href="#" class="nav-link @if($menu == 'usuarios') active" aria-current="page @else link-light @endif ">
+                                <i class="fas fa-users"></i> Usuarios
+                            </a>
+                        </button>
+                    </li>
+                    <div class="collapse" id="users-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-5">
+                            <li><a href="{{ route('dashboard.users.admins') }}" class="link-light rounded text-decoration-none">Administradores</a></li>
+                            <li><a href="{{ route('dashboard.users.functionaries') }}" class="link-light rounded text-decoration-none">Funcionarios</a></li>
+                            <li><a href="{{ route('dashboard.users.readers') }}" class="link-light rounded text-decoration-none">Leitores</a></li>
+                        </ul>
+                    </div>
+                @endcan
             </ul>
             <hr>
             <div class="dropdown">
@@ -83,7 +94,7 @@
                     <strong>{{ $user->name }}</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="{{ route('dashboard.profile') }}">Perfil</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard.users.profile') }}">Perfil</a></li>
                     <li><a class="dropdown-item" href="{{ route('dashboard.users.edit') }}">Editar Perfil</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>

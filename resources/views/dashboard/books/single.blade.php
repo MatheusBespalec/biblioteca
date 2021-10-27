@@ -12,8 +12,6 @@
                 <hr>
                 <p><strong>Author: </strong>{{ $book->author }}</p>
                 <hr>
-                <p><strong>Descrição: </strong>{{ $book->description }}</p>
-                <hr>
                 <p><strong>Categorias: </strong>
                     @foreach($categories as $category)
                         @if($loop->last)
@@ -24,17 +22,24 @@
                     @endforeach
                 </p>
                 <hr>
-                <p><strong>Disponivel para empréstimo: </strong>@if($book->availabe == 1) Sim @else Não @endif</p>
+                <p><strong>Buscas: </strong>{{ $book->views }}</p>
                 <hr>
                 <a href="{{ route('dashboard.book.edit',$book->id) }}" class="btn btn-primary">Editar Livro</a>
-                <a href="" class="btn btn-danger">Deletar</a>
+                @can('delete')
+                    <form class="d-inline-block" action="{{ route('dashboard.book.delete',['book'=>$book->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" type="submit">Excluir</button>
+                    </form>
+                @endcan
             </div>
             <div class="col-12 mt-3">
                 <hr>
                 <h2>Info:</h2>
-                <p><strong>Buscas: </strong>{{ $book->views }}</p>
+                <p><strong>Disponivel para empréstimo: </strong>@if($book->available == 1) Sim @else Não @endif</p>
                 <p><strong>Doador do Livro: </strong>{{ $giver->name }} (ID: {{ $giver->id }})</p>
                 <p><strong>Cadastro do Livro: </strong>{{ date('d/m/Y', strtotime($book->created_at)) }}</p>
+                <p><strong>Descrição: </strong>{{ $book->description }}</p>
                 <hr>
             </div><!--col-12-->
         </div><!--row-->

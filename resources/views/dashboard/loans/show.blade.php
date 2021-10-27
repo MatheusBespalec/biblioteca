@@ -15,11 +15,12 @@
         </tr>
         </thead>
         <tbody>
+
             @foreach($openLoans as $loan)
-                <tr class="table-success">
+                <tr class="@if($loan->limit_devolution >= date('Y-m-d')) table-warning @else table-danger @endif">
                     <th scope="row">{{ $loan->id }}</th>
-                    <td><img src="/images/books/book-clean-code.jpg" alt="Clean Code"></td>
-                    <td>Clean Code</td>
+                    <td><img src="/images/books/{{ $loan->image }}" alt="{{ $loan->title }}"></td>
+                    <td>{{ $loan->title }}</td>
                     <td>{{ date('d/m/Y', strtotime($loan->withdraw)) }}</td>
                     <td>{{ date('d/m/Y', strtotime($loan->limit_devolution)) }}</td>
                     <td>@if($loan->limit_devolution <= time()) No Prazo @else Atrazado @endif</td>
@@ -45,7 +46,7 @@
         <tbody>
             @foreach($closeLoans as $loan)
                 <tr class="table-success">
-                    <th scope="row">{{ $loan->id }}</th>
+                    <th scope="row">{{ $loan->code }}</th>
                     <td><img src="/images/books/{{ $loan->image }}" alt="{{ $loan->title }}"></td>
                     <td>{{ $loan->title }}</td>
                     <td>{{ date('d/m/Y', strtotime($loan->withdraw)) }}</td>
@@ -55,4 +56,5 @@
             @endforeach
         </tbody>
     </table>
+    {{ $closeLoans->links() }}
 @endsection

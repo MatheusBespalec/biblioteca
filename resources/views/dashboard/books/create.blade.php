@@ -16,7 +16,7 @@
         <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
         <div class="form-floating mb-3">
-            <input type="text" name="title" class="form-control" id="floatingInput" value="{{ old('name') }}">
+            <input type="text" name="title" class="form-control" id="floatingInput" value="{{ old('title') }}">
             <label for="floatingInput">Titulo</label>
         </div>
 
@@ -36,16 +36,12 @@
             <label for="floatingInput">Autor</label>
         </div>
 
-        @error('available')
-        <p class="fw-bold text-danger mb-0">{{ $message }}</p>
+        @error('giver_id')
+            <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
-        <div class="input-group mb-3">
-            <label class="input-group-text"  for="inputGroupSelect01">Disponivel para retirar?</label>
-            <select class="form-select" name="available" id="inputGroupSelect01">
-                <option @if(old('available') !== 1 && old('available') !== 0) selected  @endif disabled>Selecione</option>
-                <option @if(old('available') === '1') selected  @endif value="1">Sim</option>
-                <option @if(old('available') === '0') selected  @endif value="0">Não</option>
-            </select>
+        <div class="form-floating mb-3">
+            <input type="text" name="giver_id" class="form-control" id="floatingInput" value="{{ old('giver_id') }}">
+            <label for="floatingInput">ID do Doador</label>
         </div>
 
         <p class="fw-bold">Selecione as categorias do livro:</p>
@@ -55,8 +51,8 @@
                 <label class="form-check-label" for="{{ $category->category }}">{{ $category->category }}</label>
             </div>
         @endforeach
+        <input type="hidden" name="available" value="1">
         <br>
-        <input type="hidden" name="giver_id" value="{{ $user->id }}">
         <button type="submit" class="btn btn-primary mt-2">Cadastrar livro</button>
     </form>
 @endsection

@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
+use App\Policies\BookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+
     ];
 
     /**
@@ -25,19 +28,31 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-books',function (User $user) {
-            return $user->hierarchy_level === 2;
+        Gate::define('get-book',function (Book $book) {
+            return $book->available == 1;
         });
 
-        Gate::define('create-books',function (User $user) {
-            return $user->hierarchy_level === 2;
+        Gate::define('get-loan',function (User $user) {
+            return $user->cpf != null && $user->address != null && $user->phone != null && $user->open_loan == 0;
         });
 
-        Gate::define('delete-books',function (User $user) {
-            return $user->hierarchy_level === 2;
+        Gate::define('update',function (User $user) {
+            return $user->hierarchy_level >= 2;
         });
 
-        Gate::define('update-user',function (User $user) {
+        Gate::define('create',function (User $user) {
+            return $user->hierarchy_level >= 2;
+        });
+
+        Gate::define('delete',function (User $user) {
+            return $user->hierarchy_level === 3;
+        });
+
+        Gate::define('update-level',function (User $user) {
+            return $user->hierarchy_level === 3;
+        });
+
+        Gate::define('update-level',function (User $user) {
             return $user->hierarchy_level === 3;
         });
     }

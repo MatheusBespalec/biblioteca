@@ -27,20 +27,20 @@
         </thead>
         <tbody>
         @foreach($openLoans as $loan)
-            <tr class="@if($loan->limit_devolution <= time()) table-warning @else table-danger @endif">
-                <th scope="row">{{ $loan->id }}</th>
-                <td><img src="/images/books/book-clean-code.jpg" alt="Clean Code"></td>
-                <td>Clean Code</td>
-                <td>Matheus Bespalec</td>
+            <tr class="@if($loan->limit_devolution >= date('Y-m-d')) table-warning @else table-danger @endif">
+                <th scope="row">{{ $loan->code }}</th>
+                <td><img src="/images/books/{{ $loan->image }}" alt="{{ $loan->title }}"></td>
+                <td>{{ $loan->title }}</td>
+                <td>{{ $loan->name }}</td>
                 <td>{{ date('d/m/Y', strtotime($loan->withdraw)) }}</td>
                 <td>{{ date('d/m/Y', strtotime($loan->limit_devolution)) }}</td>
                 <td>@if($loan->limit_devolution <= time()) No Prazo @else Atrazado @endif</td>
-                <td><a href="{{ route('dashboard.loans.update',['loan'=>$loan->id]) }}" class="btn btn-primary">Foi Devolvido</a></td>
+                <td><a href="{{ route('dashboard.loans.update',['loan'=>$loan->code]) }}" class="btn btn-primary">Foi Devolvido</a></td>
             </tr>
         @endforeach
         </tbody>
     </table>
-
+    {{ $openLoans->links() }}
     <hr>
 
     <h2>Ultimas Devoluções:</h2>
@@ -59,7 +59,7 @@
         <tbody>
             @foreach($closeLoans as $loan)
                 <tr class="table-success">
-                    <th scope="row">{{ $loan->id }}</th>
+                    <th scope="row">{{ $loan->code }}</th>
                     <td><img src="/images/books/{{ $loan->image }}" alt="Clean Code"></td>
                     <td>{{ $loan->title }}</td>
                     <td>{{ $loan->name }}</td>

@@ -29,7 +29,9 @@
                 <th scope="col">Author</th>
                 <th scope="col">Buscas</th>
                 <th scope="col">#</th>
-                <th scope="col">#</th>
+                @can('delete')
+                    <th scope="col">#</th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -41,9 +43,18 @@
                     <td>{{ $book->author }}</td>
                     <td>{{ $book->views }}</td>
                     <td><a class="btn btn-primary btn-sm" href="{{ route('dashboard.book.single',['book'=>$book->id]) }}">Informações</a></td>
-                    <td><a class="btn btn-danger btn-sm" href="">Excluir</a></td>
+                    @can('delete')
+                        <td>
+                            <form action="{{ route('dashboard.book.delete',['book'=>$book->id]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>
     </table>
+    {{ $books->links() }}
 @endsection

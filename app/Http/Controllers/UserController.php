@@ -8,19 +8,41 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
+    public function admins()
     {
         $user = Auth::user();
 
-        $admins =  User::where('hierarchy_level', 3)->get();
-        $functionaries = User::where('hierarchy_level', 2)->get();
-        $readers = User::where('hierarchy_level', 1)->get();
+        $admins =  User::where('hierarchy_level', 3)->paginate(20);
 
-        return view('dashboard.users.index',[
+        return view('dashboard.users.admins',[
             'menu'=>'usuarios',
             'user'=>$user,
-            'admins'=>$admins,
-            'functionaries'=>$functionaries,
+            'admins'=>$admins
+        ]);
+    }
+
+    public function functionaries()
+    {
+        $user = Auth::user();
+
+        $functionaries = User::where('hierarchy_level', 2)->paginate(20);
+
+        return view('dashboard.users.functionaries',[
+            'menu'=>'usuarios',
+            'user'=>$user,
+            'functionaries'=>$functionaries
+        ]);
+    }
+
+    public function readers()
+    {
+        $user = Auth::user();
+
+        $readers = User::where('hierarchy_level', 1)->paginate(20);
+
+        return view('dashboard.users.readers',[
+            'menu'=>'usuarios',
+            'user'=>$user,
             'readers'=>$readers
         ]);
     }
@@ -51,6 +73,23 @@ class UserController extends Controller
                 'address'=>$request->address
             ]);
 
-        return redirect()->route('dashboard.profile');
+        return redirect()->route('dashboard.users.profile');
+    }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('dashboard.users');
+    }
+
+    public function levelUp(User $user)
+    {
+        if ($user->hierarchy_level < 3) {
+            $user->hierarchy_level+= 1;
+            $user->save();
+        }
+
+        return redirect()->route('dashboard.users');
     }
 }

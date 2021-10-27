@@ -10,7 +10,7 @@
             <input type="text" class="form-control" name="user_id" aria-label="Username" aria-describedby="basic-addon1">
         </div>
         @error('user_id')
-            <p class="fw-bold text-danger mb-3">{{ $message }}</p>
+            <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
 
         <div class="input-group mt-3">
@@ -18,9 +18,8 @@
             <input type="text" class="form-control" name="book_id" aria-label="Username" aria-describedby="basic-addon1">
         </div>
         @error('book_id')
-        <p class="fw-bold text-danger mb-3">{{ $message }}</p>
+            <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
-
         <hr>
         <p><strong>Data de retirada: </strong>{{ date('d/m/Y') }}</p>
         <p><strong>Data de limite para devolução: </strong>{{ date('d/n/Y', strtotime('+7 days')) }}</p>
