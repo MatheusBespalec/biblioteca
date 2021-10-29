@@ -28,12 +28,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('get-book',function (Book $book) {
-            return $book->available == 1;
-        });
-
-        Gate::define('get-loan',function (User $user) {
-            return $user->cpf != null && $user->address != null && $user->phone != null && $user->open_loan == 0;
+        Gate::define('get-loan',function (User $user, Book $book) {
+            return $user->cpf != null
+                && $user->address != null
+                && $user->phone != null
+                && $user->open_loan == 0
+                && $book->available == 1;
         });
 
         Gate::define('update',function (User $user) {

@@ -31,16 +31,23 @@
                         <img src="/images/books/{{ $book->image }}" class="card-img-top rounded mx-auto d-block" alt="Clean Code">
                         <div class="card-body">
                             <h5 class="card-title">{{ $book->title }}</h5>
-                            <p class="card-text">{{ $book->description }}</p>
+                            <p class="card-text">{{ substr($book->description, 0, 100) }}...</p>
                         </div><!--card-body-->
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Autor: {{ $book->author }}</li>
+                            <li class="list-group-item">
+                                Categorias:
+                                @foreach($book->categories as $category)
+                                    @if($loop->last)
+                                        {{ $category->category }}.
+                                    @else
+                                        {{ $category->category }},
+                                    @endif
+                                @endforeach
+                            </li>
                         </ul><!--list-group-->
                         <div class="card-body">
                             <a href="{{ route('library.show',['book'=>$book->id]) }}" class="btn btn-primary btn-sm">Ver Livro</a>
-                            @auth
-                                <a href="#" class="btn btn-secondary btn-sm">Reservar</a>
-                            @endauth
                         </div><!--card-body-->
                     </div><!--card-->
                 @endforeach

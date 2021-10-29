@@ -16,9 +16,9 @@
         <tbody>
         @foreach($categories as $category)
             <tr class="table-light">
-                <th scope="row">{{ $category['id'] }}</th>
-                <td>{{ $category['category'] }}</td>
-                <td>{{ $category['count'] }}</td>
+                <th scope="row">{{ $category->id }}</th>
+                <td>{{ $category->category }}</td>
+                <td>{{ $category->books_count }}</td>
                 @can('delete')
                     <td>
                         <form action="{{ route('dashboard.category.delete',['category'=>$category['id']]) }}" method="post">

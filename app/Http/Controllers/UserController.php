@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -78,9 +79,15 @@ class UserController extends Controller
 
     public function delete(User $user)
     {
+        foreach ($user->books as $book) {
+            File::delete(app_path().'\images\books\\'.$book->image);
+            $book->loans()->delete();
+            $book->categories()->detach();
+        }
+        $user->books()->delete();
         $user->delete();
 
-        return redirect()->route('dashboard.users');
+        return back();
     }
 
     public function levelUp(User $user)
@@ -90,6 +97,6 @@ class UserController extends Controller
             $user->save();
         }
 
-        return redirect()->route('dashboard.users');
+        return back();
     }
 }

@@ -24,7 +24,7 @@
         <p class="fw-bold text-danger mb-0">{{ $message }}</p>
         @enderror
         <div class="form-floating mb-3">
-            <textarea class="form-control" name="description" id="floatingTextarea2" style="height: 100px">{{ old('description') }}</textarea>
+            <textarea class="form-control" name="description" id="floatingTextarea2" style="height: 100px;overflow: hidden">{{ old('description') }}</textarea>
             <label for="floatingTextarea2">Descrição</label>
         </div>
 

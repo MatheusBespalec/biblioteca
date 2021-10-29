@@ -19,11 +19,7 @@ class StoreLoanRequest extends FormRequest
         $user = User::find(request('user_id'));
         $book = Book::find(request('book_id'));
 
-        if (Gate::forUser($user)->denies('get-loan')) {
-            return false;
-        }
-
-        if (Gate::forUser($book)->denies('get-book')) {
+        if (Gate::forUser($user)->denies('get-loan', $book)) {
             return false;
         }
 

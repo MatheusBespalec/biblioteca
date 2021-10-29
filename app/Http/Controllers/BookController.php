@@ -4,41 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Models\Book;
-use App\Models\BookCategory;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::paginate(20);
-        $user = Auth::user();
-
-        return view('dashboard.books.index',['menu'=>'livros','user'=>$user,'books'=>$books]);
-    }
-
-    public function search(Request $request)
-    {
-        if ($request->collumn == 'category') {
-            $category = Category::where('category','like','%'.$request->search.'%')->first();
-            $books = Book::where('book_categories.category_id','=',$category->id)
-                ->join('book_categories','books.id','=','book_categories.book_id')
-                ->paginate(20);
+        $search = request('search');
+        $collumn = request('collumn');
+        if ($search) {
+            $books = Book::where($collumn,'like','%'.$search.'%')->paginate(20);
         } else {
-            $books = Book::where($request->collumn,'like','%'.$request->search.'%')->paginate(20);
+            $books = Book::paginate(20);
         }
-
         $user = Auth::user();
 
-        return view('dashboard.books.index',[
-            'menu'   => 'livros',
-            'user'   => $user,
-            'books'  => $books,
-            'search' => $request->search,
-        ]);
+        return view('dashboard.books.index',['menu'=>'livros','user'=>$user,'books'=>$books,'search'=>$search]);
     }
 
     public function create()
@@ -60,14 +44,7 @@ class BookController extends Controller
         $book['image'] = $imageName;
 
         $newBook = Book::create($book);
-        foreach ($request->categories as $singleCategory) {
-            $category = new BookCategory();
-
-            $category->book_id = $newBook->id;
-            $category->category_id = $singleCategory;
-
-            $category->save();
-        }
+        $newBook->categories()->sync($request->categories);
 
         return redirect()->route('dashboard.book.index');
     }
@@ -75,26 +52,17 @@ class BookController extends Controller
     public function show(Book $book)
     {
         $user = Auth::user();
-        $giver = User::where('id',$book->giver_id)->first();
-        $categories = BookCategory::where('book_id',$book->id)
-            ->join('categories','book_categories.category_id','=','categories.id')
-            ->get();
 
         return view('dashboard.books.single',[
-            'menu'       => 'livros',
-            'user'       => $user,
-            'book'       => $book,
-            'giver'      => $giver,
-            'categories' => $categories
+            'menu' => 'livros',
+            'user' => $user,
+            'book' => $book
         ]);
     }
 
     public function edit(Book $book)
     {
         $user = Auth::user();
-        $bookCategories = BookCategory::where('book_id',$book->id)
-            ->join('categories','book_categories.category_id','=','categories.id')
-            ->get();
         $categories = Category::all();
 
         return view('dashboard.books.edit',[
@@ -102,50 +70,39 @@ class BookController extends Controller
             'user' => $user,
             'book' => $book,
             'categories' => $categories,
-            'bookCategories' => $bookCategories
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
         $data = $request->all();
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            File::delete(app_path().'\images\books\\'.$book->image);
             $requestImage = $request->image;
 
             $nameImage = time() . '.' . $requestImage->extension();
-
             $requestImage->move(public_path('images/books/'), $nameImage);
 
             $data['image'] = $nameImage;
         }
 
-        Book::findOrFail($id)->update($data);
+        $book->update($data);
+
         if (is_array($request->categories)) {
-            $this->uptadeBookCategories($id,$request->categories);
+            $book->categories()->sync($request->categories);
         }
 
-        return redirect()->route('dashboard.book.single',['book'=>$id]);
+        return redirect()->route('dashboard.book.single');
     }
 
     public function delete(Book $book)
     {
+        File::delete(app_path().'\images\books\\'.$book->image);
+        $book->loans()->delete();
+        $book->categories()->detach();
         $book->delete();
 
-        return redirect()->route('dashboard.book.index');
-    }
-
-    private function uptadeBookCategories($book_id,$categories)
-    {
-        BookCategory::where('book_id', $book_id)->delete();
-
-        foreach ($categories as $singleCategory) {
-            $category = new BookCategory();
-
-            $category->book_id = $book_id;
-            $category->category_id = $singleCategory;
-
-            $category->save();
-        }
+        return redirect()->route('dashboard.book.single');
     }
 }

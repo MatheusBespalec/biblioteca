@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\BookCategory;
-use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
@@ -15,9 +13,10 @@ class LibraryController extends Controller
             $books = Book::where('title','like','%'.$search.'%')
                 ->orWhere('author','like','%'.$search.'%')
                 ->orderBy('views','desc')
+                ->with('categories')
                 ->paginate(9);
         } else {
-            $books = Book::orderBy('views','desc')->paginate(9);
+            $books = Book::orderBy('views','desc')->with('categories')->paginate(9);
         }
 
         return view('site.index',['page'=>'home','books'=>$books,'search'=>$search]);
@@ -33,12 +32,6 @@ class LibraryController extends Controller
         $book->views+=1;
         $book->save();
 
-        $categories = BookCategory::where('book_id',$book->id)
-            ->join('categories','book_categories.category_id','=','categories.id')
-            ->get();
-
-
-
-        return view('site.show',['page'=>'','book'=>$book,'categories'=>$categories]);
+        return view('site.show',['page'=>'','book'=>$book]);
     }
 }

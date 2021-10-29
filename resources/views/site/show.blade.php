@@ -17,7 +17,7 @@
                 <p><strong>Descrição: </strong>{{ $book->description }}</p>
                 <hr>
                 <p><strong>Categorias: </strong>
-                    @foreach($categories as $category)
+                    @foreach($book->categories as $category)
                         @if($loop->last)
                             {{ $category->category }}.
                         @else
@@ -28,9 +28,6 @@
                 <hr>
                 <p><strong>Disponivel para empréstimo: </strong>@if($book->availabe == 1) Sim @else Não @endif</p>
                 <hr>
-                @auth
-                    <a href="{{ route('dashboard.book.edit',$book->id) }}" class="btn btn-secondary">Reservar Livro</a>
-                @endauth
             </div>
         </div><!--row-->
     </div><!--container-->

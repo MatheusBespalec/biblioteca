@@ -13,7 +13,7 @@
                 <p><strong>Author: </strong>{{ $book->author }}</p>
                 <hr>
                 <p><strong>Categorias: </strong>
-                    @foreach($categories as $category)
+                    @foreach($book->categories as $category)
                         @if($loop->last)
                             {{ $category->category }}.
                         @else
@@ -37,7 +37,7 @@
                 <hr>
                 <h2>Info:</h2>
                 <p><strong>Disponivel para empréstimo: </strong>@if($book->available == 1) Sim @else Não @endif</p>
-                <p><strong>Doador do Livro: </strong>{{ $giver->name }} (ID: {{ $giver->id }})</p>
+                <p><strong>Doador do Livro: </strong>{{ $book->user->name }} (ID: {{ $book->user->id }})</p>
                 <p><strong>Cadastro do Livro: </strong>{{ date('d/m/Y', strtotime($book->created_at)) }}</p>
                 <p><strong>Descrição: </strong>{{ $book->description }}</p>
                 <hr>

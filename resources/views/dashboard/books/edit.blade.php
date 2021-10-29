@@ -2,7 +2,7 @@
 @section('title','Cadastrar Livro')
 @section('content')
     <h1>Cadastrar Livro:</h1>
-    <form action="{{ route('dashboard.book.update',['id'=>$book->id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('dashboard.book.update',['book'=>$book->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <h3>Imagem de Capa Atual</h3>
             <img src="{{ asset('images/books/'.$book->image) }}" class="small-img rounded" alt="{{ $book->name }}">
@@ -13,7 +13,7 @@
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" name="title" class="form-control" id="floatingInput" value="{{ $book->name }}">
+            <input type="text" name="title" class="form-control" id="floatingInput" value="{{ $book->title }}">
             <label for="floatingInput">Titulo</label>
         </div>
 
@@ -39,7 +39,7 @@
         <p class="fw-bold mb-0">Selecione as categorias do livro:</p>
         <span>
             *Marque apenas se quiser editar as atuais(
-            @foreach($bookCategories as $category)
+            @foreach($book->categories as $category)
                 @if($loop->last)
                     {{ $category->category }} )
                 @else

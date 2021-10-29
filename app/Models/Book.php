@@ -22,4 +22,18 @@ class Book extends Model
     protected $attributes = [
         'views' => 0,
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class,'book_categories');
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'giver_id');
+    }
 }

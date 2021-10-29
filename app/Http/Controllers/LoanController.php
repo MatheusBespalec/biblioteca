@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLoanRequest;
-use App\Models\Book;
 use App\Models\Loan;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
@@ -17,15 +15,15 @@ class LoanController extends Controller
         $user = Auth::user();
 
         $openLoans = Loan::where('return',0)
-            ->join('users','loans.user_id','=','users.id')
-            ->join('books','loans.book_id','=','books.id')
+            ->orderBy('devolution', 'desc')
+            ->orderBy('id', 'desc')
+            ->with(['user','book'])
             ->paginate(20);
         $closeLoans = Loan::where('return',1)
             ->orderBy('devolution', 'desc')
-            ->orderBy('code', 'desc')
-            ->join('users','loans.user_id','=','users.id')
-            ->join('books','loans.book_id','=','books.id')
+            ->orderBy('id', 'desc')
             ->limit(10)
+            ->with(['user','book'])
             ->get();
 
         return view('dashboard.loans.index',[
@@ -42,13 +40,15 @@ class LoanController extends Controller
 
         $openLoans = Loan::where('return',0)
             ->where('user_id',$user->id)
-            ->join('books','loans.book_id','=','books.id')
+            ->orderBy('devolution', 'desc')
+            ->orderBy('id', 'desc')
+            ->with(['user','book'])
             ->get();
         $closeLoans = Loan::where('return',1)
             ->where('user_id',$user->id)
             ->orderBy('devolution', 'desc')
-            ->orderBy('code', 'desc')
-            ->join('books','loans.book_id','=','books.id')
+            ->orderBy('id', 'desc')
+            ->with(['user','book'])
             ->paginate(10);
 
         return view('dashboard.loans.show',[
@@ -74,32 +74,22 @@ class LoanController extends Controller
         $data['withdraw'] = date('Y-m-d');
         $data['limit_devolution'] = date('Y-m-d', strtotime('+7 days'));
 
-        Loan::create($data);
-
-        $user = User::find($request->user_id);
-        $user->open_loan = 1;
-        $user->save();
-
-        $user = Book::find($request->book_id);
-        $user->available = 0;
-        $user->save();
+        $loan = Loan::create($data);
+        $loan->user->open_loan = 1;
+        $loan->book->available = 0;
+        $loan->push();
 
         return redirect()->route('dashboard.loans.index');
     }
 
     public function update(Loan $loan)
     {
-        Loan::where('code', $loan->code)
-            ->update(['return' => 1,'devolution' => date('Y-m-d')]);
+        $loan->devolution = date('Y-m-d');
+        $loan->return = 1;
+        $loan->user->open_loan = 0;
+        $loan->book->available = 1;
+        $loan->push();
 
-        $user = User::find($loan->user_id);
-        $user->open_loan = 0;
-        $user->save();
-
-        $user = Book::find($loan->book_id);
-        $user->available = 1;
-        $user->save();
-
-        return redirect()->route('dashboard.loans.index');
+        return back();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BookCategory;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,20 +11,7 @@ class CategoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $categoriesRaw = Category::all();
-        $categories = [];
-
-        foreach ($categoriesRaw as $category){
-            static $count = 0;
-
-            $categories[$count] = [
-                'id' => $category->id,
-                'category' => $category->category,
-                'count' => BookCategory::where('category_id',$category->id)->count()
-            ];
-
-            $count++;
-        }
+        $categories = Category::withCount('books')->get();
 
         return view('dashboard.category.index',['menu'=>'categorias','user'=>$user,'categories'=>$categories]);
     }
@@ -39,18 +25,16 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::user();
-
         Category::create($request->all());
-
 
         return redirect()->route('dashboard.category.index');
     }
 
     public function delete(Category $category)
     {
+        $$category->books()->detach();
         $category->delete();
 
-        return redirect()->route('dashboard.category.index');
+        return back();
     }
 }
